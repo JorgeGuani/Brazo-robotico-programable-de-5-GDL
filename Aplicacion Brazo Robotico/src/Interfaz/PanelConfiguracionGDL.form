@@ -34,14 +34,35 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="sliderCintura" min="-2" pref="164" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnGuardarPasoCintura" min="-2" max="-2" attributes="0"/>
+                      <Component id="sliderMuneca" min="-2" pref="164" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnGuardarPasoMuneca" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="sliderHombro" min="-2" pref="164" max="-2" attributes="0"/>
-                  <Component id="sliderCodo" min="-2" pref="164" max="-2" attributes="0"/>
-                  <Component id="sliderMuneca" min="-2" pref="164" max="-2" attributes="0"/>
-                  <Component id="sliderPinza" min="-2" pref="164" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="sliderPinza" min="-2" pref="164" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnGuardarPasoPinza" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="sliderCintura" min="-2" pref="164" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnGuardarPasoCintura" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="sliderHombro" min="-2" pref="164" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnGuardarPasoHombro" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="sliderCodo" min="-2" pref="164" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="btnGuardarPasoCodo" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -67,24 +88,32 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnHombro" min="-2" pref="38" max="-2" attributes="0"/>
-                  <Component id="sliderHombro" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="btnGuardarPasoHombro" min="-2" max="-2" attributes="0"/>
+                      <Component id="sliderHombro" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnCodo" min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="sliderCodo" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="btnGuardarPasoCodo" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnMuneca" min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="sliderMuneca" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Component id="btnGuardarPasoMuneca" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnPinza" min="-2" pref="38" max="-2" attributes="0"/>
-                  <Component id="sliderPinza" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Component id="btnGuardarPasoPinza" min="-2" max="-2" attributes="0"/>
+                      <Component id="sliderPinza" min="-2" pref="28" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -144,15 +173,7 @@
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderCinturaMouseReleased"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100)"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JSlider" name="sliderHombro">
-      <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderHombroMouseReleased"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100, 20)"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardarPasoCintura">
@@ -163,20 +184,29 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarPasoCinturaActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JSlider" name="sliderHombro">
+      <Events>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderHombroMouseReleased"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(8,100,20)"/>
+      </AuxValues>
+    </Component>
     <Component class="javax.swing.JSlider" name="sliderCodo">
       <Events>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderCodoMouseReleased"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(8,120,20)"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JSlider" name="sliderMuneca">
       <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderMunecaStateChanged"/>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderMunecaMouseReleased"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(8,130,20)"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JSlider" name="sliderPinza">
@@ -184,8 +214,40 @@
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sliderPinzaMouseReleased"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(1,100)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSlider(18,80,20)"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGuardarPasoHombro">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar paso"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarPasoHombroActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGuardarPasoCodo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar paso"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarPasoCodoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGuardarPasoMuneca">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar paso"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarPasoMunecaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGuardarPasoPinza">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Guardar paso"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarPasoPinzaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

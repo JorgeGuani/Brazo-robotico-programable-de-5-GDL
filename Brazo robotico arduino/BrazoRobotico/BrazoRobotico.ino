@@ -19,21 +19,22 @@ boolean programarMuneca = false;
 boolean programarPinza = false;
  
 void setup() {
-  // Iniciamos el monitor serie para mostrar el resultado
   Serial.begin(9600);  
-  // Iniciamos el servo para que empiece a trabajar con el pin 9
+  
+  // Se inician los servos
   servoHombro.attach(5);
   servoCodo.attach(6);
   servoMuneca.attach(9);
   servoPinza.attach(10);
-}
- 
-void loop() {
-  servoHombro.write(40);
+  
+  // Configuración inicial
+  servoHombro.write(20);
   servoCodo.write(20);
   servoMuneca.write(20);
   servoPinza.write(20);
-
+}
+ 
+void loop() {    
   while (Serial.available() == 0) { }
   input = Serial.parseInt();
 
@@ -41,11 +42,13 @@ void loop() {
     if(input == 1) {
       programacion = true;
       ejecucion = false;
+      delay(100);
     }
     
     if(input == 2) {
       programacion = false;
       ejecucion = true;
+      delay(100);
     }
     
     if(programacion) {
@@ -56,6 +59,7 @@ void loop() {
         programarCodo = false;
         programarMuneca = false;
         programarPinza = false;
+        delay(100);
       }
       else if(input == 4) { //Hombro
         programarCintura = false;
@@ -63,6 +67,7 @@ void loop() {
         programarCodo = false;
         programarMuneca = false;
         programarPinza = false;
+        delay(100);
       }
       else if(input == 5) { //Codo
         programarCintura = false;
@@ -70,6 +75,7 @@ void loop() {
         programarCodo = true;
         programarMuneca = false;
         programarPinza = false;
+        delay(100);
       }
       else if(input == 6) { //Muñeca
         programarCintura = false;
@@ -77,6 +83,7 @@ void loop() {
         programarCodo = false;
         programarMuneca = true;
         programarPinza = false;
+        delay(100);
       }
       else if(input == 7) { //Pinza
         programarCintura = false;
@@ -84,37 +91,43 @@ void loop() {
         programarCodo = false;
         programarMuneca = false;
         programarPinza = true;
+        delay(100);
       }
 
-      if(programarCintura) {
+      if(programarCintura && input > 7) {
         Serial.println("Cintura");
+        delay(100);
       }
 
-      if(programarHombro) {
+      if(programarHombro && input > 7) {
         Serial.print("Hombro: ");  
         Serial.println(input);
-        //servoHombro.write(input);
+        servoHombro.write(input);
+        delay(100);
       }
 
-      if(programarCodo) {        
+      if(programarCodo && input > 7) {        
         Serial.print("Codo: ");  
         Serial.println(input);
-        //servoCodo.write(input);
+        servoCodo.write(input);
+        delay(100);
       }
 
-      if(programarMuneca) {        
+      if(programarMuneca && input > 7) {        
         Serial.print("Muñeca: ");  
         Serial.println(input);
-        //servoMuneca.write(input);
+        servoMuneca.write(input);
+        delay(200);
       }
 
-      if(programarPinza) {        
+      if(programarPinza && input > 7) {        
         Serial.print("Pinza: ");  
         Serial.println(input);
-        //servoPinza.write(input);
+        servoPinza.write(input);
+        delay(100);
       }
       
-    }        
+    } // Fin de la programación        
     
   }
   /*if (Serial.available()) {

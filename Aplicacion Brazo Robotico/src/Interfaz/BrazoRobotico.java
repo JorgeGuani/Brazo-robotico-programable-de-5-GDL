@@ -5,7 +5,13 @@
  */
 package Interfaz;
 
+import com.panamahitek.ArduinoException;
+import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.BorderLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import jssc.SerialPortException;
 
 /**
  *
@@ -15,10 +21,27 @@ public class BrazoRobotico extends javax.swing.JFrame {
 
     /**
      * Creates new form BrazoRobotico
+     * 
      */
+    static PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
+    
+    static DefaultTableModel model = new DefaultTableModel();
+    
     public BrazoRobotico() {
         initComponents();
         createPanels();
+        model.addColumn("Articulación");
+        model.addColumn("Grado");
+        tablaPasos.setModel(model);
+        tablaPasos.setEnabled(false);
+        btnListo.setVisible(false);
+        
+        try {
+            arduino.arduinoTX("/dev/ttyUSB0", 9600);
+        } catch (ArduinoException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                            .log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -31,6 +54,9 @@ public class BrazoRobotico extends javax.swing.JFrame {
     private void initComponents() {
 
         panelPrincipal = new javax.swing.JPanel();
+        contenedorTablaPasos = new javax.swing.JScrollPane();
+        tablaPasos = new javax.swing.JTable();
+        btnListo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -43,12 +69,29 @@ public class BrazoRobotico extends javax.swing.JFrame {
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 399, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 260, Short.MAX_VALUE)
+            .addGap(0, 265, Short.MAX_VALUE)
         );
+
+        tablaPasos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        contenedorTablaPasos.setViewportView(tablaPasos);
+
+        btnListo.setText("Listo");
+        btnListo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListoActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -63,16 +106,47 @@ public class BrazoRobotico extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(contenedorTablaPasos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(129, 129, 129)
+                .addComponent(btnListo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 17, Short.MAX_VALUE)
-                .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contenedorTablaPasos, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnListo, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListoActionPerformed
+        try {
+            arduino.sendData("8");
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+        
+        PanelInicial inicio = new PanelInicial();
+        inicio.setSize(400, 300);
+        inicio.setLocation(2, 2);
+        
+        panelPrincipal.removeAll();
+        panelPrincipal.add(inicio, BorderLayout.CENTER);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+        btnListo.setVisible(false);
+    }//GEN-LAST:event_btnListoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -110,10 +184,13 @@ public class BrazoRobotico extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton btnListo;
+    private javax.swing.JScrollPane contenedorTablaPasos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     public static javax.swing.JPanel panelPrincipal;
+    public static javax.swing.JTable tablaPasos;
     // End of variables declaration//GEN-END:variables
 
     private void createPanels() {
