@@ -108,7 +108,7 @@ public class PanelInicial extends javax.swing.JPanel {
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
         try {
-            arduino.sendData("2");
+            arduino.sendData("8");
         } catch (ArduinoException | SerialPortException ex) {
             Logger.getLogger(PanelConfiguracionGDL.class.getName())
                     .log(Level.SEVERE, null, ex);

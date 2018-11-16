@@ -46,7 +46,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         btnCodo = new javax.swing.JButton();
         btnMuneca = new javax.swing.JButton();
         btnPinza = new javax.swing.JButton();
-        sliderCintura = new javax.swing.JSlider(1,100, 20);
+        sliderCintura = new javax.swing.JSlider(10,4076, 2038);
         btnGuardarPasoCintura = new javax.swing.JButton();
         sliderHombro = new javax.swing.JSlider(8,100,20);
         sliderCodo = new javax.swing.JSlider(8,120,20);
@@ -265,7 +265,14 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGuardarPasoCinturaActionPerformed
 
     private void sliderCinturaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderCinturaMouseReleased
-        
+        String valor = sliderCintura.getValue()+"";
+        System.out.println(valor);
+        try {
+            arduino.sendData(valor);
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_sliderCinturaMouseReleased
 
     private void sliderHombroMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderHombroMouseReleased
@@ -313,6 +320,13 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
     }//GEN-LAST:event_sliderPinzaMouseReleased
 
     private void btnCinturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCinturaActionPerformed
+        try {
+            arduino.sendData("3");
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+        
         sliderCintura.setVisible(true);
         sliderHombro.setVisible(false);
         sliderCodo.setVisible(false);

@@ -27,6 +27,9 @@ public class BrazoRobotico extends javax.swing.JFrame {
     
     static DefaultTableModel model = new DefaultTableModel();
     
+    String gradosMotores = "";
+    String valoresMotores = "";
+    
     public BrazoRobotico() {
         initComponents();
         createPanels();
@@ -131,7 +134,7 @@ public class BrazoRobotico extends javax.swing.JFrame {
 
     private void btnListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListoActionPerformed
         try {
-            arduino.sendData("8");
+            arduino.sendData("2");
         } catch (ArduinoException | SerialPortException ex) {
             Logger.getLogger(PanelConfiguracionGDL.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -146,6 +149,24 @@ public class BrazoRobotico extends javax.swing.JFrame {
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
         btnListo.setVisible(false);
+        
+        for (int i = 0; i < tablaPasos.getModel().getRowCount(); i++) {
+            if(i == tablaPasos.getModel().getRowCount() - 1) {
+                valoresMotores += tablaPasos.getModel().getValueAt(i, 0) + ", ";
+                valoresMotores += tablaPasos.getModel().getValueAt(i, 1);            
+            } else {
+                valoresMotores += tablaPasos.getModel().getValueAt(i, 0) + ", ";
+                valoresMotores += tablaPasos.getModel().getValueAt(i, 1) + ", ";                
+            }           
+        }
+        System.out.println(valoresMotores); 
+        
+        try {
+            arduino.sendData(valoresMotores);
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnListoActionPerformed
 
     /**
