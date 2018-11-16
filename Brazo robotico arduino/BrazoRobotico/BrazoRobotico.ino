@@ -243,91 +243,14 @@ void loop() {
     } // Fin de la programación        
     
   }
-  /*if (Serial.available()) {
-    
-    delay(100);
-    input = Serial.read();
-
-    if (Serial.available() > 0) {
-      if (input == '1') {
-        Serial.println("programar");
-        while (input == '1') {
-          //Serial.println("Está en programacion");
-          if (Serial.read() == '3') {
-            programarCintura();
-          }
-          else if (Serial.read() == '4') {
-            programarHombro();
-          }
-          //else if (Serial.read() != 10) break; //Si se detecta un cambio en la entrada serial
-        }
-      }
-
-      if (input == '2') {
-        Serial.println("ejecutar");
-      }
-    }*/  
-}
-
-/*void programar() {
->>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
-  
-    if(ejecucion) {
-      Serial.println("Ejecución");
-      Serial.println(input);
-
-    }
-    
-  }
-
-  
-
-  
-  /*if (Serial.available()) {
-    
-    delay(100);
-    input = Serial.read();
-
-    if (Serial.available() > 0) {
-      if (input == '1') {
-        Serial.println("programar");
-        while (input == '1') {
-          //Serial.println("Está en programacion");
-          if (Serial.read() == '3') {
-            programarCintura();
-          }
-          else if (Serial.read() == '4') {
-            programarHombro();
-          }
-          //else if (Serial.read() != 10) break; //Si se detecta un cambio en la entrada serial
-        }
-      }
-
-      if (input == '2') {
-        Serial.println("ejecutar");
-      }
-    }*/  
-}
-
-/*void programar() {
   
 }
 
-void programarCintura() {
-  Serial.println("Cintura: ");
+ 
+
+  
+  
 }
-
-void programarHombro() {
-  Serial.println("Esta en hombro");
-  while (Serial.available() == 0) { }
-  input = Serial.parseInt();
-
-  if(input > 0) {
-    Serial.print("Hombro: ");  
-    Serial.println(input);
-    //servoHombro.write(input);
-  }
-}*/
 
 void clockwise() {
   stepCounter++;
