@@ -5,8 +5,13 @@
  */
 package Interfaz;
 
+import static Interfaz.BrazoRobotico.arduino;
 import static Interfaz.BrazoRobotico.panelPrincipal;
+import com.panamahitek.ArduinoException;
 import java.awt.BorderLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jssc.SerialPortException;
 
 /**
  *
@@ -78,7 +83,7 @@ public class PanelInicial extends javax.swing.JPanel {
                 .addComponent(btnProgramar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnEjecutar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -92,10 +97,22 @@ public class PanelInicial extends javax.swing.JPanel {
         panelPrincipal.add(configuracion, BorderLayout.CENTER);
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
+        
+        try {
+            arduino.sendData("1");
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        } 
     }//GEN-LAST:event_btnProgramarActionPerformed
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEjecutarActionPerformed
-        // TODO add your handling code here:
+        try {
+            arduino.sendData("2");
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnEjecutarActionPerformed
 
 

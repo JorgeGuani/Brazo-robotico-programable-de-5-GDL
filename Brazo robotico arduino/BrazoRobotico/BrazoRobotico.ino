@@ -6,6 +6,7 @@ Servo servoCodo;
 Servo servoMuneca;
 Servo servoPinza;
 
+<<<<<<< HEAD
 // Variables para el motor a pasos
 const int motorPin1 = 4;    // 28BYJ48 In1
 const int motorPin2 = 7;    // 28BYJ48 In2
@@ -24,6 +25,10 @@ int valorMotorPasos = 2038;
 // Variable para la entrada serial
 long input = 0;
 String cadena = "";
+=======
+// Variable para la entrada serial
+long input = 0;
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
 
 // Banderas para el control de configuración
 boolean programacion = false;
@@ -33,7 +38,10 @@ boolean programarHombro = false;
 boolean programarCodo = false;
 boolean programarMuneca = false;
 boolean programarPinza = false;
+<<<<<<< HEAD
 boolean creacionArreglo = false;
+=======
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
  
 void setup() {
   Serial.begin(9600);  
@@ -43,12 +51,15 @@ void setup() {
   servoCodo.attach(6);
   servoMuneca.attach(9);
   servoPinza.attach(10);
+<<<<<<< HEAD
 
   // Declarar pines del motor a pasos como salida
   pinMode(motorPin1, OUTPUT);
   pinMode(motorPin2, OUTPUT);
   pinMode(motorPin3, OUTPUT);
   pinMode(motorPin4, OUTPUT);
+=======
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
   
   // Configuración inicial
   servoHombro.write(20);
@@ -57,6 +68,7 @@ void setup() {
   servoPinza.write(20);
 }
  
+<<<<<<< HEAD
 void loop() {     
   while (Serial.available() == 0) { }
 
@@ -87,6 +99,25 @@ void loop() {
     }
 
     // Checa cada bandera para determinar las intrucciones del arduino
+=======
+void loop() {    
+  while (Serial.available() == 0) { }
+  input = Serial.parseInt();
+
+  if(input > 0) {
+    if(input == 1) {
+      programacion = true;
+      ejecucion = false;
+      delay(100);
+    }
+    
+    if(input == 2) {
+      programacion = false;
+      ejecucion = true;
+      delay(100);
+    }
+    
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
     if(programacion) {
       Serial.println("Programacion");
       if(input == 3) {      //Cintura
@@ -132,6 +163,7 @@ void loop() {
 
       if(programarCintura && input > 7) {
         Serial.println("Cintura");
+<<<<<<< HEAD
         if(input >= valorMotorPasos) {
           for (int i = valorMotorPasos; i < input; i++) {
             clockwise();
@@ -155,39 +187,90 @@ void loop() {
       }
 
       if(programarHombro && input > 7 && input < 120) {
+=======
+        delay(100);
+      }
+
+      if(programarHombro && input > 7) {
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
         Serial.print("Hombro: ");  
         Serial.println(input);
         servoHombro.write(input);
         delay(100);
       }
 
+<<<<<<< HEAD
       if(programarCodo && input > 7 && input < 120) {        
+=======
+      if(programarCodo && input > 7) {        
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
         Serial.print("Codo: ");  
         Serial.println(input);
         servoCodo.write(input);
         delay(100);
       }
 
+<<<<<<< HEAD
       if(programarMuneca && input > 7 && input < 120) {        
+=======
+      if(programarMuneca && input > 7) {        
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
         Serial.print("Muñeca: ");  
         Serial.println(input);
         servoMuneca.write(input);
         delay(200);
       }
 
+<<<<<<< HEAD
       if(programarPinza && input > 7 && input < 120) {        
+=======
+      if(programarPinza && input > 7) {        
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
         Serial.print("Pinza: ");  
         Serial.println(input);
         servoPinza.write(input);
         delay(100);
       }
       
+<<<<<<< HEAD
     } // Fin de la parte de programación de servos
 
     /*if(creacionArreglo && input != 2) {
       String valoresMotores;
       int pasos[input];
     }*/
+=======
+    } // Fin de la programación        
+    
+  }
+  /*if (Serial.available()) {
+    
+    delay(100);
+    input = Serial.read();
+
+    if (Serial.available() > 0) {
+      if (input == '1') {
+        Serial.println("programar");
+        while (input == '1') {
+          //Serial.println("Está en programacion");
+          if (Serial.read() == '3') {
+            programarCintura();
+          }
+          else if (Serial.read() == '4') {
+            programarHombro();
+          }
+          //else if (Serial.read() != 10) break; //Si se detecta un cambio en la entrada serial
+        }
+      }
+
+      if (input == '2') {
+        Serial.println("ejecutar");
+      }
+    }*/  
+}
+
+/*void programar() {
+>>>>>>> 0667da4f22b887c06cc7966a4debe158c784d031
   
     if(ejecucion) {
       Serial.println("Ejecución");
@@ -264,3 +347,19 @@ void setOutput(int step) {
   digitalWrite(motorPin3, bitRead(stepsLookup[step], 2));
   digitalWrite(motorPin4, bitRead(stepsLookup[step], 3));
 }
+
+void programarCintura() {
+  Serial.println("Cintura: ");
+}
+
+void programarHombro() {
+  Serial.println("Esta en hombro");
+  while (Serial.available() == 0) { }
+  input = Serial.parseInt();
+
+  if(input > 0) {
+    Serial.print("Hombro: ");  
+    Serial.println(input);
+    //servoHombro.write(input);
+  }
+}*/
