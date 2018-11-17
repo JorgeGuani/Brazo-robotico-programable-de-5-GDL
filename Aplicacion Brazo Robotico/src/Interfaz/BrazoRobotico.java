@@ -151,12 +151,32 @@ public class BrazoRobotico extends javax.swing.JFrame {
         btnListo.setVisible(false);
         
         for (int i = 0; i < tablaPasos.getModel().getRowCount(); i++) {
+            // Cambiar nombre del servo por ID
+            int idServo = 0;
+            switch(tablaPasos.getModel().getValueAt(i, 0).toString()) {
+                case "Cintura":
+                    idServo = 1;
+                    break;
+                case "Hombro":
+                    idServo = 2;
+                    break;
+                case "Codo":
+                    idServo = 3;
+                    break;
+                case "Muñeca":
+                    idServo = 4;
+                    break;
+                case "Pinza":
+                    idServo = 5;
+                    break;
+            }
+            
             if(i == tablaPasos.getModel().getRowCount() - 1) {
-                valoresMotores += tablaPasos.getModel().getValueAt(i, 0) + ", ";
+                valoresMotores += idServo + ",";
                 valoresMotores += tablaPasos.getModel().getValueAt(i, 1);            
             } else {
-                valoresMotores += tablaPasos.getModel().getValueAt(i, 0) + ", ";
-                valoresMotores += tablaPasos.getModel().getValueAt(i, 1) + ", ";                
+                valoresMotores += idServo + ",";
+                valoresMotores += tablaPasos.getModel().getValueAt(i, 1) + ";";                
             }           
         }
         System.out.println(valoresMotores); 

@@ -25,6 +25,7 @@ int valorMotorPasos = 2038;
 long input = 0;
 String cadena = "";
 
+
 // Banderas para el control de configuración
 boolean programacion = false;
 boolean ejecucion = false;
@@ -60,11 +61,51 @@ void setup() {
 void loop() {     
   while (Serial.available() == 0) { }
 
+  
   if(creacionArreglo) {
-    cadena = Serial.readString();
-    Serial.println(cadena);
-    creacionArreglo=false;
-    input = 10;
+    // Arreglo de caracteres para los valores de los servos a leer
+    char inputByte[31];
+    byte size = Serial.readBytes(inputByte, 30);
+    inputByte[size] = 0;
+  
+    char* command = strtok(inputByte, ";");
+    int pasos[size][2];
+    int contador = 0;
+    while (command != 0) {
+      // Partir el string en 2, reemplazar la "," por un "0"
+      char* separator = strchr(command, ',');
+      if (separator != 0) {
+        *separator = 0;
+        int servoId = atoi(command);
+        ++separator;
+        int position = atoi(separator);
+
+        creacionArreglo = false;
+        input = 10;
+        
+        //Guardar los valores en el arreglo de los servos        
+        Serial.print("Servo ID: ");
+        Serial.println(servoId);
+        Serial.print("Valor: ");
+        Serial.println(position);
+        Serial.println("");
+        pasos[contador][0] = servoId;
+        pasos[contador][1] = position;
+        contador++;
+      }
+      command = strtok(0, ";");            
+    }
+    
+    if(input == 10) {
+      Serial.println("Arreglo guardado:");
+      for(int i = 0; i < contador; i++) {
+        Serial.print("ServoId: ");
+        Serial.print(pasos[i][0]);
+        Serial.print(", valor: ");
+        Serial.println(pasos[i][1]);
+      }
+    }
+    
   }
   else {
     input = Serial.parseInt();
