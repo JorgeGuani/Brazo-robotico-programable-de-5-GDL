@@ -6,12 +6,12 @@
 package Interfaz;
 
 import static Interfaz.BrazoRobotico.arduino;
-import static Interfaz.BrazoRobotico.btnListo;
 import static Interfaz.BrazoRobotico.model;
 import com.panamahitek.ArduinoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jssc.SerialPortException;
+import static Interfaz.BrazoRobotico.btnFinalizar;
 
 /**
  *
@@ -48,10 +48,10 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         btnPinza = new javax.swing.JButton();
         sliderCintura = new javax.swing.JSlider(10,4076, 2038);
         btnGuardarPasoCintura = new javax.swing.JButton();
-        sliderHombro = new javax.swing.JSlider(8,100,20);
-        sliderCodo = new javax.swing.JSlider(8,120,20);
-        sliderMuneca = new javax.swing.JSlider(8,130,20);
-        sliderPinza = new javax.swing.JSlider(18,80,20);
+        sliderHombro = new javax.swing.JSlider(8,120,10);
+        sliderCodo = new javax.swing.JSlider(8,120,60);
+        sliderMuneca = new javax.swing.JSlider(8,130,10);
+        sliderPinza = new javax.swing.JSlider(18,80,18);
         btnGuardarPasoHombro = new javax.swing.JButton();
         btnGuardarPasoCodo = new javax.swing.JButton();
         btnGuardarPasoMuneca = new javax.swing.JButton();
@@ -261,7 +261,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         agregarPaso[1] = sliderCintura.getValue()+"";
         
         model.addRow(agregarPaso);
-        btnListo.setVisible(true);
+        btnFinalizar.setVisible(true);
     }//GEN-LAST:event_btnGuardarPasoCinturaActionPerformed
 
     private void sliderCinturaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sliderCinturaMouseReleased
@@ -430,7 +430,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         agregarPaso[1] = sliderHombro.getValue()+"";
         
         model.addRow(agregarPaso);
-        btnListo.setVisible(true);
+        btnFinalizar.setVisible(true);
     }//GEN-LAST:event_btnGuardarPasoHombroActionPerformed
 
     private void btnGuardarPasoCodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPasoCodoActionPerformed
@@ -439,7 +439,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         agregarPaso[1] = sliderCodo.getValue()+"";
         
         model.addRow(agregarPaso);
-        btnListo.setVisible(true);
+        btnFinalizar.setVisible(true);
     }//GEN-LAST:event_btnGuardarPasoCodoActionPerformed
 
     private void btnGuardarPasoMunecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPasoMunecaActionPerformed
@@ -448,7 +448,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         agregarPaso[1] = sliderMuneca.getValue()+"";
         
         model.addRow(agregarPaso);
-        btnListo.setVisible(true);
+        btnFinalizar.setVisible(true);
     }//GEN-LAST:event_btnGuardarPasoMunecaActionPerformed
 
     private void btnGuardarPasoPinzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPasoPinzaActionPerformed
@@ -457,7 +457,7 @@ public class PanelConfiguracionGDL extends javax.swing.JPanel {
         agregarPaso[1] = sliderPinza.getValue()+"";
         
         model.addRow(agregarPaso);
-        btnListo.setVisible(true);
+        btnFinalizar.setVisible(true);
     }//GEN-LAST:event_btnGuardarPasoPinzaActionPerformed
 
     private void sliderMunecaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderMunecaStateChanged

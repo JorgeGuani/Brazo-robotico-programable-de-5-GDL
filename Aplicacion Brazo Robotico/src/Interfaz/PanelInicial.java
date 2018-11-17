@@ -6,6 +6,7 @@
 package Interfaz;
 
 import static Interfaz.BrazoRobotico.arduino;
+import static Interfaz.BrazoRobotico.btnEscribirValores;
 import static Interfaz.BrazoRobotico.panelPrincipal;
 import com.panamahitek.ArduinoException;
 import java.awt.BorderLayout;
@@ -24,6 +25,7 @@ public class PanelInicial extends javax.swing.JPanel {
      */
     public PanelInicial() {
         initComponents();
+        btnEjecutar.setEnabled(false);
     }
 
     /**
@@ -98,6 +100,8 @@ public class PanelInicial extends javax.swing.JPanel {
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
         
+        btnEscribirValores.setVisible(false);
+        
         try {
             arduino.sendData("1");
         } catch (ArduinoException | SerialPortException ex) {
@@ -117,7 +121,7 @@ public class PanelInicial extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEjecutar;
+    public static javax.swing.JButton btnEjecutar;
     private javax.swing.JButton btnProgramar;
     private javax.swing.JLabel lblBrazoRobot;
     // End of variables declaration//GEN-END:variables

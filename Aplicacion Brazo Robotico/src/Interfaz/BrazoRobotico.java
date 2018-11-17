@@ -5,6 +5,7 @@
  */
 package Interfaz;
 
+import static Interfaz.PanelInicial.btnEjecutar;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.BorderLayout;
@@ -37,7 +38,8 @@ public class BrazoRobotico extends javax.swing.JFrame {
         model.addColumn("Grado");
         tablaPasos.setModel(model);
         tablaPasos.setEnabled(false);
-        btnListo.setVisible(false);
+        btnEscribirValores.setVisible(false);
+        btnFinalizar.setVisible(false);
         
         try {
             arduino.arduinoTX("/dev/ttyUSB0", 9600);
@@ -59,7 +61,8 @@ public class BrazoRobotico extends javax.swing.JFrame {
         panelPrincipal = new javax.swing.JPanel();
         contenedorTablaPasos = new javax.swing.JScrollPane();
         tablaPasos = new javax.swing.JTable();
-        btnListo = new javax.swing.JButton();
+        btnEscribirValores = new javax.swing.JButton();
+        btnFinalizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -89,10 +92,17 @@ public class BrazoRobotico extends javax.swing.JFrame {
         ));
         contenedorTablaPasos.setViewportView(tablaPasos);
 
-        btnListo.setText("Listo");
-        btnListo.addActionListener(new java.awt.event.ActionListener() {
+        btnEscribirValores.setText("Escribir valores");
+        btnEscribirValores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListoActionPerformed(evt);
+                btnEscribirValoresActionPerformed(evt);
+            }
+        });
+
+        btnFinalizar.setText("Finalizar");
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
             }
         });
 
@@ -111,12 +121,14 @@ public class BrazoRobotico extends javax.swing.JFrame {
             .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(contenedorTablaPasos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contenedorTablaPasos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(btnEscribirValores, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(btnListo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,14 +137,30 @@ public class BrazoRobotico extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contenedorTablaPasos, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnListo, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEscribirValores, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnListoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListoActionPerformed
+    private void btnEscribirValoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscribirValoresActionPerformed
+        try {
+            arduino.sendData(valoresMotores);
+        } catch (ArduinoException | SerialPortException ex) {
+            Logger.getLogger(PanelConfiguracionGDL.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+                
+        btnEscribirValores.setVisible(false);
+        btnEjecutar.setEnabled(true);
+        btnEjecutar.requestFocus(true);
+        
+    }//GEN-LAST:event_btnEscribirValoresActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         try {
             arduino.sendData("2");
         } catch (ArduinoException | SerialPortException ex) {
@@ -148,7 +176,9 @@ public class BrazoRobotico extends javax.swing.JFrame {
         panelPrincipal.add(inicio, BorderLayout.CENTER);
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
-        btnListo.setVisible(false);
+        btnEscribirValores.setVisible(false);
+        
+        valoresMotores = "";
         
         for (int i = 0; i < tablaPasos.getModel().getRowCount(); i++) {
             // Cambiar nombre del servo por ID
@@ -179,15 +209,10 @@ public class BrazoRobotico extends javax.swing.JFrame {
                 valoresMotores += tablaPasos.getModel().getValueAt(i, 1) + ";";                
             }           
         }
-        System.out.println(valoresMotores); 
-        
-        try {
-            arduino.sendData(valoresMotores);
-        } catch (ArduinoException | SerialPortException ex) {
-            Logger.getLogger(PanelConfiguracionGDL.class.getName())
-                    .log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnListoActionPerformed
+        System.out.println(valoresMotores);
+        btnFinalizar.setVisible(false);
+        btnEscribirValores.setVisible(true);
+    }//GEN-LAST:event_btnFinalizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,7 +250,8 @@ public class BrazoRobotico extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JButton btnListo;
+    public static javax.swing.JButton btnEscribirValores;
+    public static javax.swing.JButton btnFinalizar;
     private javax.swing.JScrollPane contenedorTablaPasos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
