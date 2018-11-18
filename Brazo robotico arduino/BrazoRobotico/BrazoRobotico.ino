@@ -31,7 +31,6 @@ int valorMotorPasos = 2038;
 
 // Variable para la entrada serial
 long input = 0;
-String cadena = "";
 
 // Banderas para el control de configuración
 boolean programacion = false;
@@ -323,6 +322,25 @@ void loop() {
       
       for(int i = 0; i < contadorPasosBrazo; i++) {
         if(botonPresionado) {
+          // Cintura                
+          if(2038 > valorMotorPasos) {
+            
+            for (int i = valorMotorPasos; i <= 2038; i++) {
+              clockwise();
+              Serial.println(i);
+              delayMicroseconds(motorSpeed);
+            }
+          }
+          else {
+            Serial.println("Retrocede");
+            for (int i = valorMotorPasos; i >= 2038; i--) {
+              anticlockwise();
+              Serial.println(i);
+              delayMicroseconds(motorSpeed);
+            }
+          }
+          valorMotorPasos = 2038;
+          
           // Hombro      
           for(int k = servoHombro.read(); k >= 10; k--) {
             servoHombro.write(k);        
@@ -353,7 +371,26 @@ void loop() {
         }
         
         if(regresaALaPosicionInicial) {
-            // Colocar motores a la posición inicial      
+          // Colocar motores a la posición inicial
+          // Cintura                
+          if(2038 > valorMotorPasos) {
+            
+            for (int i = valorMotorPasos; i <= 2038; i++) {
+              clockwise();
+              Serial.println(i);
+              delayMicroseconds(motorSpeed);
+            }
+          }
+          else {
+            Serial.println("Retrocede");
+            for (int i = valorMotorPasos; i >= 2038; i--) {
+              anticlockwise();
+              Serial.println(i);
+              delayMicroseconds(motorSpeed);
+            }
+          }
+          valorMotorPasos = 2038;
+          
           // Hombro      
           for(int k = servoHombro.read(); k >= 10; k--) {
             servoHombro.write(k);        
@@ -380,7 +417,26 @@ void loop() {
         }
         
         switch(pasos[i][0]) {
-          case 1:
+          case 6:
+            //Serial.print("VALOR");
+            //Serial.println(valorMotorPasos);
+            int temp = pasos[i][1];
+            if(temp >= valorMotorPasos) {
+              Serial.println("Avanza");
+              for (int i = valorMotorPasos; i <= temp; i++) {
+                clockwise();
+                Serial.println(i);
+                delayMicroseconds(motorSpeed);
+              }
+            }
+            else {
+              for (int i = valorMotorPasos; i >= temp; i--) {
+                anticlockwise();
+                Serial.println(i);
+                delayMicroseconds(motorSpeed);
+              }
+            }
+            valorMotorPasos = temp;
             
             break;
             
