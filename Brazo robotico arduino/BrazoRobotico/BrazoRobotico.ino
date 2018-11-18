@@ -416,30 +416,7 @@ void loop() {
           regresaALaPosicionInicial = false;
         }
         
-        switch(pasos[i][0]) {
-          case 6:
-            //Serial.print("VALOR");
-            //Serial.println(valorMotorPasos);
-            int temp = pasos[i][1];
-            if(temp >= valorMotorPasos) {
-              Serial.println("Avanza");
-              for (int i = valorMotorPasos; i <= temp; i++) {
-                clockwise();
-                Serial.println(i);
-                delayMicroseconds(motorSpeed);
-              }
-            }
-            else {
-              for (int i = valorMotorPasos; i >= temp; i--) {
-                anticlockwise();
-                Serial.println(i);
-                delayMicroseconds(motorSpeed);
-              }
-            }
-            valorMotorPasos = temp;
-            
-            break;
-            
+        switch(pasos[i][0]) {                      
           case 2:
             if(pasos[i][1] > servoHombro.read()) {
               for(int j = servoHombro.read(); j <= pasos[i][1]; j++) {
@@ -502,6 +479,29 @@ void loop() {
             }
             Serial.print("Pinza: ");
             Serial.println(servoPinza.read()); 
+            break;
+
+          case 6:
+            //Serial.print("VALOR");
+            //Serial.println(valorMotorPasos);
+            int temp = pasos[i][1];
+            if(temp >= valorMotorPasos) {
+              Serial.println("Avanza");
+              for (int i = valorMotorPasos; i <= temp; i++) {
+                clockwise();
+                Serial.println(i);
+                delayMicroseconds(motorSpeed);
+              }
+            }
+            else {
+              for (int i = valorMotorPasos; i >= temp; i--) {
+                anticlockwise();
+                Serial.println(i);
+                delayMicroseconds(motorSpeed);
+              }
+            }
+            valorMotorPasos = temp;
+            
             break;
              
         }
