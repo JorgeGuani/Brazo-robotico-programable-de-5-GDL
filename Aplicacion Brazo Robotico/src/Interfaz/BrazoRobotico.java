@@ -185,7 +185,7 @@ public class BrazoRobotico extends javax.swing.JFrame {
             int idServo = 0;
             switch(tablaPasos.getModel().getValueAt(i, 0).toString()) {
                 case "Cintura":
-                    idServo = 1;
+                    idServo = 6;
                     break;
                 case "Hombro":
                     idServo = 2;

@@ -321,7 +321,8 @@ void loop() {
       boolean regresaALaPosicionInicial = false;
       
       for(int i = 0; i < contadorPasosBrazo; i++) {
-        if(botonPresionado) {
+        input = Serial.parseInt();
+        if(botonPresionado || input == 9) {
           // Cintura                
           if(2038 > valorMotorPasos) {
             
