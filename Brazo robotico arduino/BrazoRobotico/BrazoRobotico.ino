@@ -1,5 +1,13 @@
 #include <Servo.h>
 
+// Leds y botón
+#define LEDVERDE 3
+#define LEDROJO  13
+#define BOTON    2
+#define BUZZER   11
+
+boolean botonPresionado = false;
+
 // Declaramos las variables para controlar cada servomotor
 Servo servoHombro;
 Servo servoCodo;
@@ -40,12 +48,18 @@ int pasos[100][2];
 
 // Contador de los pasos guardados del brazo
 int contadorPasosBrazo;
-int velocidadPorPaso = 40;
+int velocidadPorPaso = 20;
 int tiempoEsperaEntrePasos = 300;
 
  
 void setup() {
   Serial.begin(9600);  
+
+  pinMode(LEDVERDE, OUTPUT);
+  pinMode(LEDROJO, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(BOTON, INPUT);    
+  attachInterrupt(digitalPinToInterrupt(BOTON), paroEmergencia, RISING);
   
   // Se inician los servos
   servoHombro.attach(5);
@@ -66,8 +80,21 @@ void setup() {
   servoPinza.write(18);
 }
  
-void loop() {     
-  while (Serial.available() == 0) { }
+void loop() {
+  
+  
+  while (Serial.available() == 0) {    
+    if(programacion) {
+      digitalWrite(LEDVERDE, HIGH);
+      delay(50);
+      digitalWrite(LEDVERDE, LOW);
+      delay(50);
+      digitalWrite(LEDVERDE, HIGH);
+      delay(50);
+      digitalWrite(LEDVERDE, LOW);
+      delay(500);     
+    }  
+  }
   
   if(creacionArreglo) {
     const int LONGITUDENTRADA = 1000;
@@ -145,7 +172,7 @@ void loop() {
 
     // Checa cada bandera para determinar las intrucciones del arduino
     if(programacion) {
-      Serial.println("Programacion");
+      Serial.println("Programacion");            
       if(input == 3) {      //Cintura
         programarCintura = true;
         programarHombro = false;
@@ -244,6 +271,8 @@ void loop() {
 
     // Ejecución automática de la programación guardada
     if(ejecucion) {
+      digitalWrite(LEDVERDE, HIGH);
+      noTone(BUZZER);
       Serial.println("Reposicionando...");
       delay(1000);
 
@@ -293,6 +322,35 @@ void loop() {
       boolean regresaALaPosicionInicial = false;
       
       for(int i = 0; i < contadorPasosBrazo; i++) {
+        if(botonPresionado) {
+          // Hombro      
+          for(int k = servoHombro.read(); k >= 10; k--) {
+            servoHombro.write(k);        
+            delay(15);        
+          }
+          // Codo
+          for(int k = servoCodo.read(); k >= 60; k--) {
+            servoCodo.write(k);
+            delay(5);
+          }
+    
+          // Muñeca
+          for(int k = servoMuneca.read(); k >= 10; k--) {
+            servoMuneca.write(k);
+            delay(2);
+          }
+    
+          // Pinza
+          for(int k = servoPinza.read(); k >= 18; k--) {
+            servoPinza.write(k);
+            delay(velocidadPorPaso-5);
+          }
+          digitalWrite(LEDROJO, LOW);
+          digitalWrite(LEDVERDE, LOW);
+          noTone(BUZZER);
+          botonPresionado = false;
+          break;
+        }
         
         if(regresaALaPosicionInicial) {
             // Colocar motores a la posición inicial      
@@ -316,7 +374,7 @@ void loop() {
           // Pinza
           for(int k = servoPinza.read(); k >= 18; k--) {
             servoPinza.write(k);
-            delay(velocidadPorPaso);
+            delay(velocidadPorPaso/2);
           }
           regresaALaPosicionInicial = false;
         }
@@ -378,12 +436,12 @@ void loop() {
             if(pasos[i][1] > servoPinza.read()) {
               for(int j = servoPinza.read(); j <= pasos[i][1]; j++) {
                 servoPinza.write(j);
-                delay(velocidadPorPaso);
+                delay(velocidadPorPaso/2);
               }               
             } else {
               for(int j = servoPinza.read(); j >= pasos[i][1]; j--) {
                 servoPinza.write(j);
-                delay(velocidadPorPaso);
+                delay(velocidadPorPaso/2);
               }                     
             }
             Serial.print("Pinza: ");
@@ -420,4 +478,10 @@ void setOutput(int step) {
   digitalWrite(motorPin2, bitRead(stepsLookup[step], 1));
   digitalWrite(motorPin3, bitRead(stepsLookup[step], 2));
   digitalWrite(motorPin4, bitRead(stepsLookup[step], 3));
+}
+
+void paroEmergencia() {
+  botonPresionado = true;
+  digitalWrite(LEDROJO, HIGH);
+  tone(BUZZER, 1000);
 }
