@@ -54,7 +54,6 @@ int tiempoEsperaEntrePasos = 300;
  
 void setup() {
   Serial.begin(9600);  
-  
   pinMode(LEDVERDE, OUTPUT);
   pinMode(LEDROJO, OUTPUT);
   pinMode(BUZZER, OUTPUT);
@@ -83,6 +82,7 @@ void setup() {
     ejecucion = true;
     programacion = false;
     creacionArreglo = false;
+    
     servoHombro.write(EEPROM.read(3));
     servoCodo.write(EEPROM.read(4));
     servoMuneca.write(EEPROM.read(5));
@@ -92,7 +92,7 @@ void setup() {
       pasos[i][1] = EEPROM.read(i*2+9);
     }
     Serial.println("Valores guardados en la EEPROM");
-    for(int i = 0; i < 10; i ++) {
+    for(int i = 0; i < 12; i ++) {
       Serial.println(EEPROM.read(i));
     }
     

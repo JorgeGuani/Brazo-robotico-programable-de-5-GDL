@@ -48,7 +48,8 @@ void ejecutarProgramacion() {
     Serial.print("Pasos del robot: ");
     Serial.println(contadorPasosBrazo);  
   } else {
-    valorMotorPasos = EEPROM.read(2) * 16;
+    int valorCargadoMotorAPasos = EEPROM.read(2);
+    valorMotorPasos = valorCargadoMotorAPasos * 16;
     delay(20);
     servoHombro.write(EEPROM.read(3));
     delay(100);
@@ -155,7 +156,10 @@ void ejecutarProgramacion() {
       case 6:
         //Serial.print("VALOR");
         //Serial.println(valorMotorPasos);
-        int temp = pasos[i][1];
+        int temp = pasos[i][1] * 16;
+        
+        Serial.print("temp: ");
+        Serial.println(temp);
         if(temp >= valorMotorPasos) {
           Serial.println("Avanza");
           for (int i = valorMotorPasos; i <= temp; i++) {
@@ -172,13 +176,16 @@ void ejecutarProgramacion() {
           }
         }
         valorMotorPasos = temp;
-        
+        int division = valorMotorPasos/16;
+        Serial.print("Valor guardado: ");
+        Serial.println(division);
+        EEPROM.write(2, division);
         break;
          
     }
     
     EEPROM.write(1, i+1);
-    EEPROM.write(2, valorMotorPasos/16);
+    
     EEPROM.write(3, servoHombro.read());
     EEPROM.write(4, servoCodo.read());
     EEPROM.write(5, servoMuneca.read());
