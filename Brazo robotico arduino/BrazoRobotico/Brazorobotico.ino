@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <Servo.h>
 
 // Leds y botón
@@ -53,7 +54,7 @@ int tiempoEsperaEntrePasos = 300;
  
 void setup() {
   Serial.begin(9600);  
-
+  
   pinMode(LEDVERDE, OUTPUT);
   pinMode(LEDROJO, OUTPUT);
   pinMode(BUZZER, OUTPUT);
@@ -71,16 +72,43 @@ void setup() {
   pinMode(motorPin2, OUTPUT);
   pinMode(motorPin3, OUTPUT);
   pinMode(motorPin4, OUTPUT);
+  //EEPROM.write(0,0);
+  if(EEPROM.read(0) == 0) {
+    // Configuración inicial
+    servoHombro.write(10);
+    servoCodo.write(60);
+    servoMuneca.write(10);
+    servoPinza.write(18);
+  } else {
+    ejecucion = true;
+    programacion = false;
+    creacionArreglo = false;
+    servoHombro.write(EEPROM.read(3));
+    servoCodo.write(EEPROM.read(4));
+    servoMuneca.write(EEPROM.read(5));
+    servoPinza.write(EEPROM.read(6));
+    for(int i = 0; i < EEPROM.read(7); i++) {
+      pasos[i][0] = EEPROM.read(i*2+8);
+      pasos[i][1] = EEPROM.read(i*2+9);
+    }
+    Serial.println("Valores guardados en la EEPROM");
+    for(int i = 0; i < 10; i ++) {
+      Serial.println(EEPROM.read(i));
+    }
+    
+    
+  }
+
   
-  // Configuración inicial
-  servoHombro.write(10);
-  servoCodo.write(60);
-  servoMuneca.write(10);
-  servoPinza.write(18);
+  
 }
  
 void loop() {
-  
+  // Ejecución automática de la programación guardada
+  if(ejecucion) {      
+    ejecutarProgramacion();
+  }
+    
   // Indicar al usuario que está en modo programación
   while (Serial.available() == 0) {   
     if(programacion) {
@@ -95,7 +123,7 @@ void loop() {
     }  
   }
   
-  if(creacionArreglo) {
+  if(creacionArreglo) {    
     leerDatos();
   }
   else {
@@ -127,6 +155,7 @@ void loop() {
 
     // Checa cada bandera para determinar las intrucciones del arduino
     if(programacion) {
+      //EEPROM.write(0,0);
       Serial.println("Programacion");            
       if(input == 3) {      //Cintura
         programarCintura = true;
@@ -192,340 +221,11 @@ void loop() {
     } // Fin de la parte de programación de servos
 
 
-    // Ejecución automática de la programación guardada
-    if(ejecucion) {
-      ejecutarProgramacion();
-    }
+    
     
   }
 } // Fin loop
 
-
-void programacionCintura() {
-  Serial.println("Cintura");
-  if(input >= valorMotorPasos) {
-    for (int i = valorMotorPasos; i < input; i++) {
-      clockwise();
-      Serial.println(i);
-      delayMicroseconds(motorSpeed);
-    }
-  }
-  else {
-    for (int i = valorMotorPasos; i > input ; i--) {
-      anticlockwise();
-      Serial.println(i);
-      delayMicroseconds(motorSpeed);
-    }
-  }
-  valorMotorPasos = input;
-  Serial.println(" ");
-  Serial.println(valorMotorPasos);
-  Serial.println(" ");
-  Serial.println(" ");
-  delay(100);
-}
-
-void programacionHombro() {
-  Serial.print("Hombro: ");  
-  Serial.println(input);
-  servoHombro.write(input);
-  delay(100);
-}
-
-void programacionCodo() {
-  Serial.print("Codo: ");  
-  Serial.println(input);
-  servoCodo.write(input);
-  delay(100);
-}
-
-void programacionMuneca() {
-  Serial.print("Muñeca: ");  
-  Serial.println(input);
-  servoMuneca.write(input);
-  delay(200);
-}
-
-void programacionPinza() {
-  Serial.print("Pinza: ");  
-  Serial.println(input);
-  servoPinza.write(input);
-  delay(100);
-}
-
-void clockwise() {
-  stepCounter++;
-  if (stepCounter >= numSteps) stepCounter = 0;
-  setOutput(stepCounter);
-}
-
-void anticlockwise() {
-  stepCounter--;
-  if (stepCounter < 0) stepCounter = numSteps - 1;
-  setOutput(stepCounter);
-}
-
-void setOutput(int step) {
-  digitalWrite(motorPin1, bitRead(stepsLookup[step], 0));
-  digitalWrite(motorPin2, bitRead(stepsLookup[step], 1));
-  digitalWrite(motorPin3, bitRead(stepsLookup[step], 2));
-  digitalWrite(motorPin4, bitRead(stepsLookup[step], 3));
-}
-
-void leerDatos() {
-  const int LONGITUDENTRADA = 1000;
-  // Arreglo de caracteres para los valores de los servos a leer
-  char inputByte[LONGITUDENTRADA + 1];
-  byte size = Serial.readBytes(inputByte, LONGITUDENTRADA);
-  inputByte[size] = 0;
-
-  char* command = strtok(inputByte, ";");
-  //int pasos[size][2];
-  contadorPasosBrazo = 0;
-  while (command != 0) {
-    // Partir el string en 2, reemplazar la "," por un "0"
-    char* separator = strchr(command, ',');
-    if (separator != 0) {
-      *separator = 0;
-      int servoId = atoi(command);
-      ++separator;
-      int position = atoi(separator);
-
-      creacionArreglo = false;
-      input = 10;
-      
-      //Guardar los valores en el arreglo de los servos        
-      Serial.print("Servo ID: ");
-      Serial.println(servoId);
-      Serial.print("Valor: ");
-      Serial.println(position);
-      Serial.println("");
-      pasos[contadorPasosBrazo][0] = servoId;
-      pasos[contadorPasosBrazo][1] = position;
-      contadorPasosBrazo++;
-    }
-    command = strtok(0, ";");            
-  }
-  
-  if(input == 10) {
-    Serial.println("Arreglo guardado:");
-    for(int i = 0; i < contadorPasosBrazo; i++) {
-      Serial.print("ServoId: ");
-      Serial.print(pasos[i][0]);
-      Serial.print(", valor: ");
-      Serial.println(pasos[i][1]);
-    }
-  }    
-}
-
-void ejecutarProgramacion() {
-  digitalWrite(LEDVERDE, HIGH);
-  noTone(BUZZER);
-  Serial.println("Reposicionando...");
-  delay(1000);
-
-  // Colocar motores a la posición inicial
-  Serial.println("Posición inicial");
-  
-  // Hombro      
-  for(int i = servoHombro.read(); i >= 10; i--) {
-    servoHombro.write(i);        
-    delay(100);        
-  }
-  Serial.print("Hombro: ");
-  Serial.println(servoHombro.read());
-
-  // Codo
-  for(int i = servoCodo.read(); i >= 60; i--) {
-    servoCodo.write(i);
-    delay(100);
-  }
-  Serial.print("Codo: ");
-  Serial.println(servoCodo.read());
-
-  // Muñeca
-  for(int i = servoMuneca.read(); i >= 10; i--) {
-    servoMuneca.write(i);
-    delay(velocidadPorPaso);
-  }
-  Serial.print("Muñeca: ");
-  Serial.println(servoMuneca.read());
-
-  // Pinza
-  for(int i = servoPinza.read(); i >= 18; i--) {
-    servoPinza.write(i);
-    delay(velocidadPorPaso);
-  }
-  Serial.print("Pinza: ");
-  Serial.println(servoPinza.read());
-
-  delay(500);
-  Serial.println("Ejecución...");
-  delay(500);
-
-  // Coloca el brazo en la posición inicial
-  Serial.print("Pasos del robot: ");
-  Serial.println(contadorPasosBrazo);
-  
-  boolean regresaALaPosicionInicial = false;
-  
-  for(int i = 0; i < contadorPasosBrazo; i++) {
-    input = Serial.parseInt();
-    if(botonPresionado || input == 9) {
-      colocarPosicionInicial();
-      digitalWrite(LEDROJO, LOW);
-      digitalWrite(LEDVERDE, LOW);
-      noTone(BUZZER);
-      botonPresionado = false;
-      break;
-    }
-    
-    if(regresaALaPosicionInicial) {
-      // Colocar motores a la posición inicial
-      colocarPosicionInicial();
-      regresaALaPosicionInicial = false;
-    }
-    
-    switch(pasos[i][0]) {                      
-      case 2:
-        if(pasos[i][1] > servoHombro.read()) {
-          for(int j = servoHombro.read(); j <= pasos[i][1]; j++) {
-            servoHombro.write(j);
-            delay(velocidadPorPaso);
-          }              
-        } else {
-          for(int j = servoHombro.read(); j >= pasos[i][1]; j--) {
-            servoHombro.write(j);
-            delay(velocidadPorPaso);
-          }                     
-        }
-        Serial.print("Hombro: ");
-        Serial.println(servoHombro.read()); 
-        break;
-        
-      case 3:
-        if(pasos[i][1] > servoCodo.read()) {
-          for(int j = servoCodo.read(); j <= pasos[i][1]; j++) {
-            servoCodo.write(j);
-            delay(velocidadPorPaso);
-          }               
-        } else {
-          for(int j = servoCodo.read(); j >= pasos[i][1]; j--) {
-            servoCodo.write(j);
-            delay(velocidadPorPaso);
-          }                     
-        }
-        Serial.print("Codo: ");
-        Serial.println(servoCodo.read());
-        break;
-        
-      case 4:
-        if(pasos[i][1] > servoMuneca.read()) {
-          for(int j = servoMuneca.read(); j <= pasos[i][1]; j++) {
-            servoMuneca.write(j);
-            delay(velocidadPorPaso);
-          }               
-        } else {
-          for(int j = servoMuneca.read(); j >= pasos[i][1]; j--) {
-            servoMuneca.write(j);
-            delay(velocidadPorPaso);
-          }                     
-        }
-        Serial.print("Muñeca: ");
-        Serial.println(servoMuneca.read());
-        break;
-        
-      case 5:
-        if(pasos[i][1] > servoPinza.read()) {
-          for(int j = servoPinza.read(); j <= pasos[i][1]; j++) {
-            servoPinza.write(j);
-            delay(velocidadPorPaso/2);
-          }               
-        } else {
-          for(int j = servoPinza.read(); j >= pasos[i][1]; j--) {
-            servoPinza.write(j);
-            delay(velocidadPorPaso/2);
-          }                     
-        }
-        Serial.print("Pinza: ");
-        Serial.println(servoPinza.read()); 
-        break;
-
-      case 6:
-        //Serial.print("VALOR");
-        //Serial.println(valorMotorPasos);
-        int temp = pasos[i][1];
-        if(temp >= valorMotorPasos) {
-          Serial.println("Avanza");
-          for (int i = valorMotorPasos; i <= temp; i++) {
-            clockwise();
-            Serial.println(i);
-            delayMicroseconds(motorSpeed);
-          }
-        }
-        else {
-          for (int i = valorMotorPasos; i >= temp; i--) {
-            anticlockwise();
-            Serial.println(i);
-            delayMicroseconds(motorSpeed);
-          }
-        }
-        valorMotorPasos = temp;
-        
-        break;
-         
-    }
-    if(i == contadorPasosBrazo -1) {
-      i = -1;
-      regresaALaPosicionInicial = true;
-    }
-    delay(tiempoEsperaEntrePasos);        
-  }
-}
-
-void colocarPosicionInicial() {
-  // Cintura                
-  if(2038 > valorMotorPasos) {
-    
-    for (int i = valorMotorPasos; i <= 2038; i++) {
-      clockwise();
-      Serial.println(i);
-      delayMicroseconds(motorSpeed);
-    }
-  }
-  else {
-    Serial.println("Retrocede");
-    for (int i = valorMotorPasos; i >= 2038; i--) {
-      anticlockwise();
-      Serial.println(i);
-      delayMicroseconds(motorSpeed);
-    }
-  }
-  valorMotorPasos = 2038;
-  
-  // Hombro      
-  for(int k = servoHombro.read(); k >= 10; k--) {
-    servoHombro.write(k);        
-    delay(velocidadPorPaso);        
-  }
-  // Codo
-  for(int k = servoCodo.read(); k >= 60; k--) {
-    servoCodo.write(k);
-    delay(velocidadPorPaso);
-  }
-
-  // Muñeca
-  for(int k = servoMuneca.read(); k >= 10; k--) {
-    servoMuneca.write(k);
-    delay(velocidadPorPaso);
-  }
-
-  // Pinza
-  for(int k = servoPinza.read(); k >= 18; k--) {
-    servoPinza.write(k);
-    delay(velocidadPorPaso/2);
-  }
-}
 
 void paroEmergencia() {
   botonPresionado = true;
