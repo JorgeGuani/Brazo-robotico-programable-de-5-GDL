@@ -135,4 +135,34 @@ A continuación se explicarán los pre-requisitos, su instalación, etc.
 
 ## Aplicación 🔩
 ### Inicio
+La aplicación consta de 2 botones, programar y ejecutar. <br>
+<img src="Imagenes/Inicio.png" width="400"> <br/>
+De inicio solo se puede dar en programar, pues aun no hay nada guardado. <br/>
+
+### Programar <br/>
+Al darle en programar, se muestra un panel con 5 botones, uno para programar los pasos de cada motor.
+<img src="Imagenes/Programar.png" width="400"> <br/>
+Si se desea guardar un paso de un motor, solo se le da clic al botón del motor, se ajusta con el slider su valor, y posteriormente se le da en guardar paso.
+
+Conforme se guarden los pasos, la tabla irá almacenando los pasos guardados
+<img src="Imagenes/ProgramarAddTabla2.png" width="400">
+
+Una vez se hayan guardado todos los pasos a ser ejecutados, es cosa de darle en "Finalizar", y te regresará al panel principal.
+Si se quisieran añadir más pasos antes de escribirlos en el brazo robot, se puede dar en programar y añadir los pasos que se deseen. Cuando ya esté seguro de guardar esos pasos en el brazo robot, oprima el botón "Escribir valores". <br/>
+<img src="Imagenes/DespuesDeAgregarPasos.png" width="400"> <br/>
+
+**NOTA**: No es necesario re-ubicar el robot a su posicionar inicial, éste lo hará automáticamente cuando termine el último paso
+
+Al presionar "Escribir valores", se habilitará el botón "Ejecutar"
+
+<img src="Imagenes/EscribirValores.png" width="400"> <br/>
+
+Ya solo queda oprimir el botón "Ejecutar" para que el brazo robot realice la secuencia de pasos programados
+
+<img src="Imagenes/Abortar.png" width="400"> <br/>
+
+Para detener la secuencia, solo es cosa de darle en "Abortar" (el botón rojo).
+
+
+
 
