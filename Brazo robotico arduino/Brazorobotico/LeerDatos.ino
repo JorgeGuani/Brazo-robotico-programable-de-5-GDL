@@ -20,7 +20,7 @@ void leerDatos() {
 
       creacionArreglo = false;
       input = 10; // Para terminar de leer datos
-/
+
       pasos[contadorPasosBrazo][0] = servoId;
       if(pasos[contadorPasosBrazo][0] == 6) pasos[contadorPasosBrazo][1] = position/16;
       else pasos[contadorPasosBrazo][1] = position;
