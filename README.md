@@ -164,5 +164,34 @@ Ya solo queda oprimir el botón "Ejecutar" para que el brazo robot realice la se
 Para detener la secuencia, solo es cosa de darle en "Abortar" (el botón rojo).
 
 
+## Resultados 📌
+ - Todos los objetivos se han cumplido satisfactoriamente.
+ - La aplicación consta de 2 botones, programar y ejecutar, donde en programar se guarda cada paso que emitirá cada motor.
+ - El brazo robot resultó tener 5 grados de libertad.
+ - El brazo robot se controla remotamente desde una aplicación en java (elaborada en NetBeans).
+ - La información es proporcionada al usuario por medio de leds y un buzzer: El led verde parpadeando indica que el robot está en modo programación. Si la luz verde se mantiene encendida, quiere decir que el robot está ejecutando la programación guardada. Finalmente, si se aborta la ejecución por medio del botón físico, se enciende el led rojo y el buzzer suena. Al regresar el robot a la posición inicial, los leds se apagan y deja de sonar el buzzer (como en su modo inicial).
+ - Existe un botón físico que se encarga de abortar la secuencia del brazo robot (dejándolo en su posición inicial, y a la espera de volver a ejecutarse).
+ 
+ **NOTA:** 
+ - Puede que cuando se esté usando la aplicación, se tenga que hacer el proceso lentamente, pues la comunicación serial no es la suficiente rápida.
+
+<img src="Imagenes/20181118_172139.jpg" width="500">
+<img src="Imagenes/20181118_172204.jpg" width="500">
 
 
+## Construido con 🛠️
+
+Arduino IDE
+* [Arduino](http://www.arduino.cc/) <br />
+
+Netbeans IDE
+* [NetBeans](https://netbeans.org/) <br/>
+
+Fritzing
+* [Fritzing](http://fritzing.org/home/) <br/>
+
+
+## Autores ✒️
+
+* **Jorge Enrique Aguado Guaní** - [JorgeGuani](https://github.com/JorgeGuani)
+* **Natalia Méndez Martínez** - [Yaxe9512](https://github.com/Yaxe9512)
