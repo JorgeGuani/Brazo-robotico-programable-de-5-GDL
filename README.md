@@ -106,8 +106,11 @@ A continuación se explicarán los pre-requisitos, su instalación, etc.
 
 **10. ¡Listo!**
 
-## Paso 2. Armar circuitos
-> Imagen circuito
+## Paso 2. Armar circuito
+Una vez se tenga la estructa del robot (con sus motores) Siga la siguiente conexión:
+
+<img src="Imagenes/diagramaBrazoRobot.png" width="600">
+**Nota:** En la imagen se usó una batería de 1.5v. Pero debe ser de 5v a 800mA (fuente externa).
 
 ## Paso 3. Cargar programa a la placa arduino
 - Abre el arduino IDE en tu equipo
