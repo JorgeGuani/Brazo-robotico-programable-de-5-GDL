@@ -110,7 +110,7 @@ A continuación se explicarán los pre-requisitos, su instalación, etc.
 Una vez se tenga la estructa del robot (con sus motores) Siga la siguiente conexión:
 
 <img src="Imagenes/diagramaBrazoRobot.png" width="600">
-
+**NOTA:** En la imagen se usó una de 1.5v. Pero debe ser de 5v (fuente externa).
 
 ## Paso 3. Cargar programa a la placa arduino
 - Abre el arduino IDE en tu equipo
