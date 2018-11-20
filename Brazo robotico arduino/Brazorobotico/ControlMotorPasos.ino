@@ -1,9 +1,13 @@
-void clockwise() {
+/* Procedimientos para el control de motor a pasos*/
+
+// Para girarlo en dirección a las manecillas del reloj
+void clockwise() {  
   stepCounter++;
   if (stepCounter >= numSteps) stepCounter = 0;
   setOutput(stepCounter);
 }
 
+// Para girarlo en dirección contraria a las manecillas del reloj
 void anticlockwise() {
   stepCounter--;
   if (stepCounter < 0) stepCounter = numSteps - 1;

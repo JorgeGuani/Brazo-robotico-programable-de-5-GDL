@@ -20,13 +20,7 @@ void leerDatos() {
 
       creacionArreglo = false;
       input = 10; // Para terminar de leer datos
-      
-      //Guardar los valores en el arreglo de los servos        
-      /*Serial.print("Servo ID: ");
-      Serial.println(servoId);
-      Serial.print("Valor: ");
-      Serial.println(position);
-      Serial.println("");*/
+/
       pasos[contadorPasosBrazo][0] = servoId;
       if(pasos[contadorPasosBrazo][0] == 6) pasos[contadorPasosBrazo][1] = position/16;
       else pasos[contadorPasosBrazo][1] = position;
@@ -49,12 +43,6 @@ void leerDatos() {
       // Guardar valores del arreglo
       EEPROM.write(i*2 + 8,pasos[i][0]);
       int pasosStepperMotorAGuardar;
-      /*if(pasos[i][0] == 6) {
-        pasosStepperMotorAGuardar = pasos[i][1]/16;
-      }
-      else {
-        pasosStepperMotorAGuardar = pasos[i][1];
-      }*/
       EEPROM.write(i*2 + 9,pasos[i][1]);              
     }
   }    

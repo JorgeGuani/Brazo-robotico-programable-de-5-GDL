@@ -1,10 +1,12 @@
 void ejecutarProgramacion() {
+  // Enciende el led verde, indicando el proceso de ejecución
   digitalWrite(LEDVERDE, HIGH);
   noTone(BUZZER);
   Serial.println("Reposicionando...");
   delay(1000);
 
-  if(EEPROM.read(0) == 0) {
+// Ubica al robot a la posición inical sino se estaba ejecutando el robot después del corte de energía
+  if(EEPROM.read(0) == 0) {     
     // Colocar motores a la posición inicial
     Serial.println("Posición inicial");
     
@@ -47,7 +49,8 @@ void ejecutarProgramacion() {
     // Coloca el brazo en la posición inicial
     Serial.print("Pasos del robot: ");
     Serial.println(contadorPasosBrazo);  
-  } else {
+    
+  } else {  // Reubica al robot a la posición guardada después del corte de energía
     int valorCargadoMotorAPasos = EEPROM.read(2);
     valorMotorPasos = valorCargadoMotorAPasos * 16;
     delay(20);
@@ -82,13 +85,13 @@ void ejecutarProgramacion() {
       break;
     }
     
-    if(regresaALaPosicionInicial) {
+    if(regresaALaPosicionInicial) { // Se ejecuta cuando todos los pasos se terminen de ejecutar
       // Colocar motores a la posición inicial
       colocarPosicionInicial();
       regresaALaPosicionInicial = false;
     }
     
-    switch(pasos[i][0]) {                      
+    switch(pasos[i][0]) {   // Checa el ID del motor a ser ejecutado a su respectivo valor                   
       case 2:
         if(pasos[i][1] > servoHombro.read()) {
           for(int j = servoHombro.read(); j <= pasos[i][1]; j++) {
@@ -184,14 +187,15 @@ void ejecutarProgramacion() {
          
     }
     
-    EEPROM.write(1, i+1);
-    
-    EEPROM.write(3, servoHombro.read());
+    EEPROM.write(1, i+1);   // guarda el paso actual
+        
+    // guarda el valor actual de cada servo motor
+    EEPROM.write(3, servoHombro.read());  
     EEPROM.write(4, servoCodo.read());
     EEPROM.write(5, servoMuneca.read());
     EEPROM.write(6, servoPinza.read());
     
-    if(i == EEPROM.read(7)-1) {
+    if(i == EEPROM.read(7)-1) { // Reiniciar secuencia cuando llegue al final
       i = -1;
       regresaALaPosicionInicial = true;
     }

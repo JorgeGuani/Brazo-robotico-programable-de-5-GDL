@@ -1,6 +1,15 @@
+/* INSTITUTO TECNOLÓGICO DE LEÓN
+Autores:
+  -Jorge Enrique Aguado Guaní
+  -Natalia Méndez Martínez
+
+BRAZO ROBÓTICO DE 5 GLD
+*/
+
 #include <EEPROM.h>
 #include <Servo.h>
 
+/* Variables */
 // Leds y botón
 #define LEDVERDE 3
 #define LEDROJO  13
@@ -20,15 +29,13 @@ const int motorPin1 = 4;    // 28BYJ48 In1
 const int motorPin2 = 7;    // 28BYJ48 In2
 const int motorPin3 = 8;    // 28BYJ48 In3
 const int motorPin4 = 12;   // 28BYJ48 In4
-
 int motorSpeed = 3200;      //variable para fijar la velocidad
 int stepCounter = 0;        // contador para los pasos
 int stepsPerRev = 4076;     // pasos para una vuelta completa
-
 const int numSteps = 8;
 const int stepsLookup[8] = { B1000, B1100, B0100, B0110, B0010, B0011, B0001, B1001 };
 
-int valorMotorPasos = 2038;
+int valorMotorPasos = 2038; // valor inicial del motor a pasos
 
 // Variable para la entrada serial
 long input = 0;
@@ -44,13 +51,13 @@ boolean programarPinza = false;
 boolean creacionArreglo = false;
 
 // Arreglo que guarda la programación de los motores
-int pasos[100][2];
+int pasos[100][2];  // Máximo 100 pasos
 
 // Contador de los pasos guardados del brazo
 int contadorPasosBrazo;
 int velocidadPorPaso = 20;
 int tiempoEsperaEntrePasos = 300;
-
+/* Fin de la declaración de variables */
  
 void setup() {
   Serial.begin(9600);  
@@ -66,19 +73,19 @@ void setup() {
   servoMuneca.attach(9);
   servoPinza.attach(10);
 
-  // Declarar pines del motor a pasos como salida
+  // Declaración de pines del motor a pasos como salida
   pinMode(motorPin1, OUTPUT);
   pinMode(motorPin2, OUTPUT);
   pinMode(motorPin3, OUTPUT);
   pinMode(motorPin4, OUTPUT);
   //EEPROM.write(0,0);
-  if(EEPROM.read(0) == 0) {
+  if(EEPROM.read(0) == 0) { // Si el robot no se había quedado en ejecución
     // Configuración inicial
     servoHombro.write(10);
     servoCodo.write(60);
     servoMuneca.write(10);
     servoPinza.write(18);
-  } else {
+  } else {                  // Si el robot se había quedado en ejecución
     ejecucion = true;
     programacion = false;
     creacionArreglo = false;
@@ -95,12 +102,7 @@ void setup() {
     for(int i = 0; i < 12; i ++) {
       Serial.println(EEPROM.read(i));
     }
-    
-    
-  }
-
-  
-  
+  }  
 }
  
 void loop() {
@@ -218,15 +220,12 @@ void loop() {
         programacionPinza();
       }
       
-    } // Fin de la parte de programación de servos
-
-
-    
-    
+    } // Fin de la parte de programación de servos    
   }
 } // Fin loop
 
 
+// Interrupción
 void paroEmergencia() {
   botonPresionado = true;
   digitalWrite(LEDROJO, HIGH);

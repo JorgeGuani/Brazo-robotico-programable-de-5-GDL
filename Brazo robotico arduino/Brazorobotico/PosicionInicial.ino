@@ -1,3 +1,5 @@
+/* Verifica la posición actual de cada motor, los mueve a la posición inicial*/
+
 void colocarPosicionInicial() {
   // Cintura                
   if(2038 > valorMotorPasos) {
