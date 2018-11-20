@@ -107,4 +107,32 @@ A continuación se explicarán los pre-requisitos, su instalación, etc.
 **10. ¡Listo!**
 
 ## Paso 2. Armar circuitos
+> Imagen circuito
+
+## Paso 3. Cargar programa a la placa arduino
+- Abre el arduino IDE en tu equipo
+- Carga en el IDE el archivo `Brazo robotico arduino/Brazorobotico/Brazorobotico.ino`
+- Conecta la placa arduino a tu equipo
+- Compila el código en el Arduino IDE
+- Selecciona el puerto para la placa
+
+    > /dev/ttyUSB0
+- Carga el programa a la placa arduino
+
+
+## Paso 4. Ejecutar la aplicación en Netbeans IDE
+- Abre Netbeans IDE
+- Importa el proyecto llamado: `Aplicacion Brazo Robotico`
+- Importar librería PanamaHitek_arduino (que es la que permite la comunicación serial entre arduino y java)
+   http://panamahitek.com/libreria-panamahitek_arduino/
+   
+   > Clic derecho en bibliotecas (del proyecto)
+   > Añadir archivo JAR/Carpeta
+   > Buscar y seleccionar la librería PanamaHitek_Arduino-3.0.0.jar
+   
+- Ejucutar aplicación
+
+
+## Aplicación 🔩
+### Inicio
 
